@@ -77,8 +77,12 @@ echo "import math"
 python -c "import math"
 echo "    ok"
 
+# Test bzip2:
+echo "import bz2"
+python -c "import bz2"
+echo "    ok"
+
 # Make sure sufficient crypto support is available in the built python.
-# This is critical.
 echo "import hashlib"
 python -c "import hashlib"
 echo "    ok"
@@ -86,6 +90,10 @@ echo "    ok"
 # Make sure SSL works
 echo "import _ssl"
 python -c "import _ssl"
+echo "    ok"
+
+echo "import _hashlib"
+python -c "import _hashlib"
 echo "    ok"
 
 # Make sure HTTPS works
