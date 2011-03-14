@@ -1,8 +1,8 @@
 #! /bin/sh
 
-if [ "$SAGE_LOCAL" = "" ]; then
-   echo "SAGE_LOCAL undefined ... exiting";
-   echo "Maybe run 'sage -sh'?"
+if [ "$SPKG_LOCAL" = "" ]; then
+   echo "SPKG_LOCAL undefined ... exiting";
+   echo "Maybe run 'qsnake --shell'?"
    exit 1
 fi
 
@@ -58,46 +58,16 @@ cd src
 
 touch Include/*
 
-build()
-{
-    rm -f "$SAGE_LOCAL"/lib/libpython*
+rm -f "$SPKG_LOCAL"/lib/libpython*
 
-    EXTRAFLAGS="$EXTRAFLAGS --enable-shared"; export EXTRAFLAGS
+./configure --enable-shared --prefix="$SPKG_LOCAL"  --enable-unicode=ucs4 CC="$CC $CFLAGS" CXX="$CXX $CXXFLAGS"
 
-    if [ `uname` = "Darwin" ]; then
-        if [ "x$SAGE64" = xyes ]; then
-            echo "64 bit OSX build enabled"
-            OPT="-g -O3 -m64 -Wall -Wstrict-prototypes"; export OPT
-            ./configure $EXTRAFLAGS --prefix="$SAGE_LOCAL" \
-	    --enable-unicode=ucs4 --with-gcc="gcc -m64" --disable-toolbox-glue
-        else
-            ./configure $EXTRAFLAGS --prefix="$SAGE_LOCAL"  \
-	    --enable-unicode=ucs4 --disable-toolbox-glue
-        fi
-    elif [ `uname` = "SunOS" ]; then
-        if [ "x$SAGE64" = xyes ]; then
-            echo "64 bit Open Solaris build enabled"
-            OPT="-g -O3 -m64 -Wall -Wstrict-prototypes"; export OPT
-            ./configure $EXTRAFLAGS --prefix="$SAGE_LOCAL"  \
-            --enable-unicode=ucs4 --with-gcc="gcc -m64"
-        else
-            ./configure $EXTRAFLAGS --prefix="$SAGE_LOCAL"  \
-            --enable-unicode=ucs4
-        fi
-    else
-        ./configure $EXTRAFLAGS --prefix="$SAGE_LOCAL"  --enable-unicode=ucs4 CC="$CC $CFLAGS" CXX="$CXX $CXXFLAGS"
-    fi
+make
 
+# the "-i" is crucial, esp. in the case of a major upgrade
+make -i install
 
-    make
-
-    # the "-i" is crucial, esp. in the case of a major upgrade
-    make -i install
-}
-
-build
-
-cd $SAGE_LOCAL/lib
+cd $SPKG_LOCAL/lib
 
 rm -rf python/python2.6 python/python2.5 python/python python python2.4 python2.5
 ln -s python2.6 python
