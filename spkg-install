@@ -103,11 +103,17 @@ rm -rf python/python2.6 python/python2.5 python/python python python2.4 python2.
 ln -s python2.6 python
 
 # Make sure extension modules were built correctly.
+echo "import math"
 python -c "import math"
+echo "    ok"
 
 # Make sure sufficient crypto support is available in the built python.
 # This is critical.
+echo "import hashlib"
 python -c "import hashlib"
+echo "    ok"
 
 # Make sure HTTPS works
+echo "import httplib # and test HTTPS"
 python -c "import httplib; assert hasattr(httplib, 'HTTPS')"
+echo "    ok"
