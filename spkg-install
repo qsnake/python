@@ -113,7 +113,12 @@ echo "import hashlib"
 python -c "import hashlib"
 echo "    ok"
 
+# Make sure SSL works
+echo "import _ssl"
+python -c "import _ssl"
+echo "    ok"
+
 # Make sure HTTPS works
-echo "import httplib # and test HTTPS"
+echo "Test https support in httplib"
 python -c "import httplib; assert hasattr(httplib, 'HTTPS')"
 echo "    ok"
