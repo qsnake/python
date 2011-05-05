@@ -100,3 +100,8 @@ echo "    ok"
 echo "Test https support in httplib"
 python -c "import httplib; assert hasattr(httplib, 'HTTPS')"
 echo "    ok"
+
+# Test sqlite3
+echo "import _sqlite3"
+python -c "import _sqlite3"
+echo "    ok"
