@@ -65,6 +65,10 @@ rm -f "$SPKG_LOCAL"/lib/libpython*
 
 make
 
+# it is important to disable parallel make, because "make install" fails if
+# installed in parallel (it starts to use half-installed python, which then
+# fails later on, see: https://github.com/qsnake/qsnake/issues/4)
+unset MAKEFLAGS
 # the "-i" is crucial, esp. in the case of a major upgrade
 make -i install
 
