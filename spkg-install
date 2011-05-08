@@ -8,6 +8,7 @@ fi
 
 set -e
 
+patches="$(pwd)/patches"
 cp patches/locale.py src/Lib/locale.py
 cp patches/Makefile.pre.in src/Makefile.pre.in
 cp patches/sdist.py src/Lib/distutils/command/sdist.py
@@ -71,6 +72,9 @@ cd $SPKG_LOCAL/lib
 
 rm -rf python/python2.6 python/python2.5 python/python python python2.4 python2.5
 ln -s python2.6 python
+
+# add sitecustomize to ensure qsnake packages have top priority
+cp "$patches/sitecustomize.py" python2.6/site-packages/
 
 # Make sure extension modules were built correctly.
 echo "import math"
